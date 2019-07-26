@@ -22,6 +22,7 @@ defmodule Bills.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Bills.DataCase
+      import Bills.Factory
     end
   end
 

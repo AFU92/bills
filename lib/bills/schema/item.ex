@@ -7,7 +7,7 @@ defmodule Bills.Schema.Item do
 
   import Ecto.Changeset
 
-  schema "clients" do
+  schema "items" do
     field(:name, :string)
     field(:description, :string)
     field(:price, :float)
@@ -21,8 +21,8 @@ defmodule Bills.Schema.Item do
   @required_fields [:name, :description, :price, :code]
   @optional_fields []
 
-  def changeset(contact, params \\ %{}) do
-    contact
+  def changeset(items, params \\ %{}) do
+    items
     |> cast(params, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
     |> unique_constraint(:code, name: :item_code_uq)
