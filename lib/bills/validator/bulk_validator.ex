@@ -49,6 +49,10 @@ defmodule Bills.Validator.BulkValidator do
                                                               percent_discount: percent_discount
                                                             }, row_number},
                                                            result ->
+      {item_quantity, _} = Float.parse(item_quantity)
+      {percent_discount, _} = Float.parse(percent_discount)
+      {item_price, _} = Float.parse(item_price)
+
       client_params = %{
         name: client_name,
         last_name: client_last_name,
@@ -62,7 +66,7 @@ defmodule Bills.Validator.BulkValidator do
         code: item_code
       }
 
-      item_total_price = item_price * item_quantity
+      item_total_price = item_price * item_quantity * percent_discount
 
       bill_item_params = %{
         unit_price: item_price,
@@ -92,8 +96,8 @@ defmodule Bills.Validator.BulkValidator do
 
   defp load_data_transaction(client_params, item_params, bill_item_params, bill_params) do
     Multi.new()
-    |> Multi.run(:create_item, ItemCrud, :create_item_if_not_exists, [item_params])
-    |> Multi.run(:create_client, ClientCrud, :create_client_if_not_exists, [client_params])
+    |> create_item(item_params)
+    |> create_client(client_params)
     |> create_bill(bill_params)
     |> create_bill_item(bill_item_params)
     |> Repo.transaction()
@@ -104,6 +108,22 @@ defmodule Bills.Validator.BulkValidator do
       {:error, multi_name, _, _} ->
         {:error, "Error inserting #{Atom.to_string(multi_name)}"}
     end
+  end
+
+  defp create_item(multi, item_params) do
+    multi
+    |> Multi.run(:create_item, fn _repo, _ ->
+      item_params
+      |> ItemCrud.create_item_if_not_exists()
+    end)
+  end
+
+  defp create_client(multi, client_params) do
+    multi
+    |> Multi.run(:create_client, fn _repo, _ ->
+      client_params
+      |> ClientCrud.create_client_if_not_exists()
+    end)
   end
 
   defp create_bill(multi, bill_params) do
@@ -117,7 +137,7 @@ defmodule Bills.Validator.BulkValidator do
 
   defp create_bill_item(multi, bill_item_params) do
     multi
-    |> Multi.run(:create_bill, fn _repo, %{create_item: item, create_bill: bill} ->
+    |> Multi.run(:create_bill_item, fn _repo, %{create_item: item, create_bill: bill} ->
       bill_item_params
       |> Map.put(:item_id, item.id)
       |> Map.put(:bill_id, bill.id)

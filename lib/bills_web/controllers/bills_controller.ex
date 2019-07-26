@@ -8,18 +8,27 @@ defmodule BillsWeb.BillsController do
       }) do
     case BulkValidator.reading_file(path, separator) do
       %{correct_data: data, error_data: []} ->
-        json(conn, %{
-          msg: "The file #{filename} has data",
-          data: data
-        })
+        BulkValidator.load_data(data)
+
+        case BulkValidator.load_data(data) do
+          %{correct_data: data, error_data: []} ->
+            json(conn, %{
+              msg: "The file #{filename} has data",
+              data: data
+            })
+
+          %{correct_data: _data, error_data: error} ->
+            json(conn, %{
+              msg: "The file #{filename} has errors",
+              error: error
+            })
+        end
 
       %{correct_data: _data, error_data: error} ->
         json(conn, %{
           msg: "The file #{filename} has errors",
           error: error
         })
-
-        nil
     end
   end
 
