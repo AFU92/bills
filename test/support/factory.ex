@@ -30,8 +30,8 @@ defmodule Bills.Factory do
 
   def bill_item_factory do
     %Bills.Schema.BillItem{
-      unit_price: 7,
-      percent_discount: 10,
+      unit_price: 7.0,
+      percent_discount: 10.0,
       quantity: 10.0,
       total_quantity_price: 63.0,
       bill: build(:bill),
