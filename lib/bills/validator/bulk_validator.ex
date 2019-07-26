@@ -66,7 +66,7 @@ defmodule Bills.Validator.BulkValidator do
         code: item_code
       }
 
-      item_total_price = item_price * item_quantity * percent_discount
+      item_total_price = item_price * item_quantity * (100 - percent_discount)
 
       bill_item_params = %{
         unit_price: item_price,

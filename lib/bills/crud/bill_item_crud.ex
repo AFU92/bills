@@ -4,15 +4,6 @@ defmodule Bills.Crud.BillItemCrud do
   """
   alias Bills.{Schema.BillItem, Repo}
 
-  @spec get_by_id(any) :: any
-  def get_by_id(id) do
-    Repo.get(BillItem, id)
-  end
-
-  def get_by_id!(id) do
-    Repo.get!(BillItem, id)
-  end
-
   def get_by_item_and_bill(item_id, bill_id) do
     Repo.get_by(BillItem, item_id: item_id, bill_id: bill_id)
   end
