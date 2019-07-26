@@ -19,4 +19,23 @@ defmodule Bills.Factory do
       identification_number: sequence(:identification_number, &"123-#{&1}")
     }
   end
+
+  def bill_factory do
+    %Bills.Schema.Bill{
+      total_price: 43.4,
+      bill_number: sequence(:bill_number, &"Bill #{&1}"),
+      client: build(:client)
+    }
+  end
+
+  def bill_item_factory do
+    %Bills.Schema.BillItem{
+      unit_price: 7,
+      percent_discount: 10,
+      quantity: 10.0,
+      total_quantity_price: 63.0,
+      bill: build(:bill),
+      item: build(:item)
+    }
+  end
 end
