@@ -9,6 +9,7 @@ defmodule Bills.Schema.Bill do
 
   schema "bills" do
     field(:total_price, :float)
+    field(:bill_number, :string)
 
     belongs_to(:client, Client)
     has_many(:bill_items, BillItem)

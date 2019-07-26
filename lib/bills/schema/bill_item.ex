@@ -20,15 +20,19 @@ defmodule Bills.Schema.BillItem do
     timestamps()
   end
 
-  @required_fields [:name, :last_name, :identification_number]
+  @required_fields [
+    :unit_price,
+    :percent_discount,
+    :quantity,
+    :total_quantity_price,
+    :item_id,
+    :bill_id
+  ]
   @optional_fields []
 
   def changeset(bill_item, params \\ %{}) do
     bill_item
     |> cast(params, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
-    |> unique_constraint(:identification_number, name: :client_identification_uq)
-    |> cast_assoc(:item)
-    |> cast_assoc(:bill)
   end
 end
