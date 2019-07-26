@@ -8,8 +8,8 @@ To start your Phoenix server:
 
 To star tests:
 
-  * Test coverage: mix coveralls
-  * Run tests: mix test
+  * Test coverage: `mix coveralls`
+  * Run tests: `mix test`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
