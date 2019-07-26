@@ -16,7 +16,14 @@ defmodule Bills.Crud.ItemCrudTest do
   describe "testing get item" do
     test "get item by id successfully", %{item: %{id: item_id}} do
       result = ItemCrud.get_by_id(item_id)
-      assert result != nil
+
+      assert %{
+               name: name,
+               description: description,
+               price: price,
+               code: code
+             } = result
+
       assert %Item{} = result
       assert result.id == item_id
     end
@@ -29,7 +36,16 @@ defmodule Bills.Crud.ItemCrudTest do
     test "get! item by id successfully",
          %{item: %{id: item_id}} do
       result = ItemCrud.get_by_id!(item_id)
-      assert %Item{id: ^item_id} = result
+
+      assert %{
+               name: name,
+               description: description,
+               price: price,
+               code: code
+             } = result
+
+      assert %Item{} = result
+      assert result.id == item_id
     end
 
     test "get! item by id failed" do
@@ -38,12 +54,17 @@ defmodule Bills.Crud.ItemCrudTest do
 
     test "get item by code successfully",
          %{item: %{code: code}} do
+      result = ItemCrud.get_by_code(code)
+
       assert %{
                name: name,
                description: description,
                price: price,
                code: code
-             } = ItemCrud.get_by_code(code)
+             } = result
+
+      assert %Item{} = result
+      assert result.code == code
     end
 
     test "get item by code failed" do
