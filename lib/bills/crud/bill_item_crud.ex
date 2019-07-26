@@ -23,7 +23,7 @@ defmodule Bills.Crud.BillItemCrud do
     |> Repo.insert()
   end
 
-  def create_or_update_build(params) do
+  def create_or_update_bill_item(params) do
     case get_by_item_and_bill(params.item_id, params.bill_id) do
       nil ->
         create_bill_item(params)
